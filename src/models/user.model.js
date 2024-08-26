@@ -27,6 +27,19 @@ const userSchema = new Schema({
         type: String,
         required: [true,"Password is required"]
     },
+    fullname:{
+        type: String,
+        required: true
+    },
+    gender:{
+        type: String,
+        enum: ['Male', 'Female', 'Other'],
+        required: true
+    },
+    dateOfBirth:{
+        type: Date,
+        required: true
+    },
     refreshToken:{
         type: String
     }
