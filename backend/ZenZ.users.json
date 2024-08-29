@@ -1,0 +1,61 @@
+[{
+  "_id": {
+    "$oid": "66b89ad8cd86bc4b56c4e49b"
+  },
+  "username": "john_doe",
+  "email": "john@example.com",
+  "password": "hashed_password",
+  "dob": {
+    "$date": "2024-08-11T11:04:56.067Z"
+  },
+  "gender": "Male",
+  "createdAt": {
+    "$date": "2024-08-11T11:04:56.067Z"
+  },
+  "updatedAt": {
+    "$date": "2024-08-11T11:04:56.067Z"
+  },
+  "tasks": [
+    {
+      "task": "Complete Btech Project",
+      "dueDate": {
+        "$date": "2024-08-11T11:04:56.067Z"
+      },
+      "priority": "High",
+      "status": "Pending",
+      "completeDate": {
+        "$date": "2024-08-11T11:04:56.067Z"
+      }
+    }
+  ],
+  "habits": [
+    {
+      "habit": "Exercise",
+      "goalFrequency": 3,
+      "goalCounter": 1,
+      "progress": 0,
+      "goalType": "weekly"
+    }
+  ],
+  "journals": [
+    {
+      "title": "Ek phool ki Athmakatha",
+      "jEntries": [
+        {
+          "chapter": "Mein ek bij",
+          "content": "3 din ki thi mein, jab mujhe pehli baar baarish ki boondo ka ehsaas hua",
+          "createDate": {
+            "$date": "2024-08-11T11:04:56.067Z"
+          }
+        }
+      ]
+    }
+  ],
+  "streak": {
+    "currentStreak": 12,
+    "longestStreak": 30,
+    "lastActivityDate": {
+      "$date": "2024-08-11T11:04:56.067Z"
+    }
+  }
+}]
