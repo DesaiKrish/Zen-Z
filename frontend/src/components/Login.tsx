@@ -112,10 +112,10 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -126,9 +126,37 @@ const LoginForm = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const onSwitchToSignup = () => {
-    navigate('/signup'); // Navigate to the signup route
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:5000/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        navigate('/');
+      } else {
+        setErrorMessage(data.message || 'Login failed');
+      }
+    } catch (error) {
+      setErrorMessage('An error occurred. Please try again.');
+    }
   };
+
+  const onSwitchToSignup = () => {
+    navigate('/signup');
+  };
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#8b7355] to-[#8b7355]">
@@ -202,8 +230,10 @@ const LoginForm = () => {
                 Forgot Password?
               </button>
             </div>
+            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
             <button
               type="submit"
+              onClick={handleSubmit} 
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#b07935] hover:bg-[#c99e69] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
             >
               Log In

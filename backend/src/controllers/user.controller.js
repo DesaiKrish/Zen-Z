@@ -28,6 +28,12 @@ const generateAccessAndRefreshTokens = async (userId) => {
 } 
 
 const registerUser = asyncHandler( async (req, res) => {
+    req.body.profpic = JSON.stringify(req.body.profpic.path);
+    req.body.gender = req.body.gender.charAt(0).toUpperCase() + req.body.gender.slice(1);
+    console.log(req.body);
+    
+    
+    
     const { username, email, password, dateOfBirth, fullname, gender } = req.body;
 
     if ([username, email, password, dateOfBirth, fullname, gender].some(field => !field || field.trim() === "")) {
@@ -54,24 +60,25 @@ const registerUser = asyncHandler( async (req, res) => {
         throw new ApiError(409, "User already exists")
     }
 
-    const profpicLocalPath = req.files?.profpic[0]?.path;
+    // const profpicLocalPath = req.files?.profpic[0]?.path;
+    // const profpicLocalPath = req.files?.profpic?.path;
 
-    if(!profpicLocalPath){
-        throw new ApiError(400, "Profile picture is required")
-    }
+    // if(!profpicLocalPath){
+    //     throw new ApiError(400, "Profile picture is required")
+    // }
 
-    const profpic = await uploadOnCloudinary(profpicLocalPath);
-    //console.log("profpic: ", profpic);
+    // const profpic = await uploadOnCloudinary(profpicLocalPath);
+    // //console.log("profpic: ", profpic);
 
-    if(!profpic){
-        throw new ApiError(500, "Failed to upload profile picture")
-    }
+    // if(!profpic){
+    //     throw new ApiError(500, "Failed to upload profile picture")
+    // }
 
     const user = await User.create({
         username: username.toLowerCase(),
         email,
         password,
-        profpic: profpic.url,
+        // profpic: profpic.url,
         dateOfBirth: parsedDateOfBirth,
         fullname,
         gender

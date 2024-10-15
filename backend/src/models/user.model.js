@@ -21,7 +21,7 @@ const userSchema = new Schema({
     },
     profpic:{
         type: String,
-        required: true
+        // required: true
     },
     password:{
         type: String,

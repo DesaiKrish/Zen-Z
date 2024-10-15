@@ -4,9 +4,9 @@ import SignupForm from './components/SignupPage.tsx';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { MotionConfig } from 'framer-motion';
-// import HamburgerMenu from './components/HamburgerMenu.tsx';
 import Dashboard from './components/dashboard.tsx';
 import LoginForm from './components/Login.tsx';
+import Profile from './components/Profile.tsx';
 
 const App = () => {
   return (
@@ -21,10 +21,19 @@ const App = () => {
           <Route path="/" element={
             <Dashboard
             username="Krish Desai"
-            email="kd@hotmail.com"
+            email="kd@gmail.com"
             profilePhoto="/krishavatar2.jpeg"
             />
             }/>
+          <Route path="/profile" element={
+            <Profile
+            // username="Krish Desai"
+            // email="kd@gmail.com"
+            // profilePhoto="/krishavatar2.jpeg"
+            />
+          }
+          />
+          
             
 
 

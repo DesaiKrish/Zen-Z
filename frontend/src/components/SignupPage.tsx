@@ -326,6 +326,30 @@ import { useNavigate } from 'react-router-dom';
     gender: '',
   })
 
+  function formatDate(inputDate) {
+    const monthMap = {
+        'Jan': '01',
+        'Feb': '02',
+        'Mar': '03',
+        'Apr': '04',
+        'May': '05',
+        'Jun': '06',
+        'Jul': '07',
+        'Aug': '08',
+        'Sep': '09',
+        'Oct': '10',
+        'Nov': '11',
+        'Dec': '12'
+    };
+
+    const [day, monthName, year] = inputDate.split('-');
+
+    const monthNumber = monthMap[monthName];
+
+    return `${day}-${monthNumber}-${year}`;
+}
+
+  const [error, setError] = useState<string | null>(null);
   const [profilePic, setProfilePic] = useState<File | null>(null)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -348,6 +372,65 @@ import { useNavigate } from 'react-router-dom';
     },
     multiple: false
   })
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!profilePic) {
+      setError('Profile picture is required');
+      return;
+    }
+
+    try {
+      // formData.dateOfBirth = formatDate(formData.dateOfBirth);
+      const data = {
+      username: formData.username,
+      email: formData.email,
+      password: formData.password,
+      dateOfBirth: formData.dateOfBirth,
+      fullname: formData.fullName,
+      gender: formData.gender,
+      profpic: profilePic,
+      }
+      
+
+      // formData.dateOfBirth = formatDate(formData.dateOfBirth);
+      formData.gender = formData.gender.charAt(0).toUpperCase();
+      console.log(formData.gender);
+      
+
+      const formdata = new FormData();
+      formdata.append('username', data.username);
+      formdata.append('email', data.email);
+      formdata.append('password', data.password);
+      formdata.append('dateOfBirth', data.dateOfBirth);
+      formdata.append('fullname', data.fullname);
+      formdata.append('gender', formData.gender);
+      formdata.append('profpic', profilePic); 
+      console.log(data);
+      
+
+      const response = await fetch('http://localhost:5000/api/users/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+        // body: formData
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        navigate('/login');
+      }
+      else {
+        setError(result.message || 'Failed to register user');
+      }
+    } catch (err) {
+      setError('Something went wrong. Please try again.');
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#8b7355] to-[#8b7355]">
@@ -436,7 +519,7 @@ import { useNavigate } from 'react-router-dom';
             <input
               id="dateOfBirth"
               name="dateOfBirth"
-              type="date"
+              type="text"
               placeholder='Date of Birth'
               value={formData.dateOfBirth}
               onChange={handleInputChange}
@@ -489,8 +572,12 @@ import { useNavigate } from 'react-router-dom';
               </div>
             </div>
           </div>
+
+          {error && <p className="text-red-500">{error}</p>}
+
           <button
             type="submit"
+            onClick={handleSubmit}
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-[#b07935] hover:bg-[#c99e69] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
           >
             Sign Up

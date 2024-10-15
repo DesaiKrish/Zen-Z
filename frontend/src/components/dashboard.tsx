@@ -335,8 +335,9 @@
 
 import React, { useState } from 'react';
 import { Target, Leaf, FileText } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import Header from './ui/Header.tsx';
 
 interface DashboardProps {
   username: string;
@@ -364,32 +365,32 @@ export default function Dashboard({ username, email, profilePhoto }: DashboardPr
     { name: 'Sun', hours: 2 },
   ];
 
-  const onSwitchToLogin = () => {
-    navigate('/login');
+  // const onSwitchToLogin = () => {
+  //   navigate('/login');
+  // }
+  // const onSwitchToSignup = () => {
+  //   navigate('/signup');
+  // };
+  // const handleLogout = async () => {
+  //   try {
+  //     await axios.post('http://localhost:5000/api/users/logout',
+  //       {},
+  //       { withCredentials: true }
+  //     )
+  //     navigate('/login')
+  //   } catch (error) {
+  //     console.error('Logout failed', error)
+  //   }
+  // };
+
+  const onSwitchToProfile = () => {
+    navigate('/profile');
   }
-  const onSwitchToSignup = () => {
-    navigate('/signup'); // Navigate to the signup route
-  };
 
   return (
     <div className="flex flex-col h-screen bg-[#8b7355]">
-      {/* Centered Header */}
-      <header className="p-4 flex justify-center">
-        <div className="bg-gray-800 bg-opacity-25 text-[#f5f5f0] p-3 rounded-3xl w-5/6 max-w-screen-xl flex justify-between items-center">
-          {/* Updated ZenZ logo with margin and Link */}
-          <Link to="/">
-            <h1 className="rounded text-2xl font-semibold cursor-pointer">ZenZ</h1>
-          </Link>
-          <div className="space-x-2">
-            <button className="rounded-lg bg-transparent text-[#f5f5f0] hover:bg-[#c19a6b] px-4 py-2" onClick={onSwitchToLogin}>
-              Login
-            </button>
-            <button className="rounded-lg bg-transparent text-[#f5f5f0] hover:bg-[#c19a6b] px-4 py-2" onClick={onSwitchToSignup}>
-              Sign Up
-            </button>
-          </div>
-        </div>
-      </header>
+      
+      <Header />
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
@@ -398,10 +399,9 @@ export default function Dashboard({ username, email, profilePhoto }: DashboardPr
           <div className="p-6 bg-[#2a2a2a] flex flex-col items-center">
             <img src={`${profilePhoto}?height=96&width=96`} alt="User" className="w-24 h-24 mb-4 rounded-full" />
             <h2 className="text-xl font-semibold mb-2">{username}</h2>
-            <p className="text-sm text-[#d2b48c] mb-4">{email}</p>
             <button
               className="rounded-lg w-full bg-transparent border border-[#f5f5f0] text-[#f5f5f0] hover:bg-[#d2b48c] hover:text-[#2a2a2a] px-4 py-2"
-              onClick={() => setActiveTab('profile')}
+              onClick={onSwitchToProfile}
             >
               View Profile
             </button>
@@ -463,7 +463,7 @@ export default function Dashboard({ username, email, profilePhoto }: DashboardPr
                   <h3 className="text-xl font-semibold text-[#f5f5f0]">Current Streak: 5 Days</h3>
                   <p className="text-sm text-[#f5f5f0]">Days to next milestone: 2</p>
                   {/* <div className="h-2 bg-white rounded-full" style={{ width: '40%' }}></div> */}
-                  <div className="h-2 bg-white rounded-full transition-transform transform hover:scale-105 hover:bg-gray-400 hover:shadow-lg" style={{ width: '40%' }}></div>
+                  <div className="h-2 bg-white rounded-full transition-transform transform hover:scale-105 hover:bg-black hover:shadow-lg" style={{ width: '40%' }}></div>
 
                 </div>
 
