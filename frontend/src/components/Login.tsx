@@ -143,7 +143,7 @@ const LoginForm = () => {
       const data = await response.json();
 
       if (response.ok) {
-        navigate('/');
+        navigate('/home');
       } else {
         setErrorMessage(data.message || 'Login failed');
       }

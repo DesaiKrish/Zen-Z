@@ -3,11 +3,11 @@ import Header from "./ui/Header.tsx";
 
 const Profile = () => {
     const [userData, setUserData] = useState<any>({
-    fullname:'',
-  email:'',
-  gender:'',
-  dateOfBirth:'',
-  profpic:''
+      fullname:'',
+      email:'',
+      gender:'',
+      dateOfBirth:'',
+      profpic:''
     });
     
     const formatDate = (dateString) => {
@@ -33,6 +33,8 @@ const Profile = () => {
         }
 
         const data = await response.json();
+        console.log(data);
+        
         
         setUserData({
           fullname: data.data.fullname,
@@ -52,23 +54,26 @@ const Profile = () => {
 
 
   return (
-    <div>
-        <div className="flex flex-col h-0 bg-[#8b7355]">
-        <Header />
-        </div><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+    <div className="bg-[#c99e69] min-h-screen">
+        <div className="flex flex-col h-0">
+        <Header color="bg-black"/>
+        </div><br/><br/><br/><br/><br/><br/><br/>
       {/* Rendering userData */}
-      <h3 className="text-3xl font-semibold text-[#2a2a2a]">User Details</h3><br></br>
-      <div className="p-6 bg-[#ffffff] flex flex-col items-center">
-        
+      <h3 className="text-3xl font-semibold text-[#ffffff]">User Details</h3><br/>
+      {/* <div className="p-6 bg-[#ffffff] flex flex-col items-center max-w-sm mx-auto rounded-md"> */}
+      <div className="flex justify-center items-center">
+        <div className="w-40 h-40 rounded-full overflow-hidden ">
           <img
-            src={`${userData?.profpic}?height=96&width=96`}
+            src={`${userData?.profpic}?height=200&width=200`}
             alt="User"
-            className="w-24 h-24 mb-4 rounded-full"
+            className="w-full h-full object-cover"
           />
+          </div>
       </div>
+      <br/><br/>
       {/* Display more user info */}
-      <div className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
+      <div className="space-y-4 max-w-6xl mx-auto px-4">
+        <div className="grid grid-cols-2 gap-9">
         <div className="rounded-lg bg-[#f5f5f0] p-4 shadow-md">
             <p className="text-lg font-semibold text-[#c99e69]">Full Name</p>
           

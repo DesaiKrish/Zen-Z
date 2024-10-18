@@ -4,9 +4,14 @@ import SignupForm from './components/SignupPage.tsx';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { MotionConfig } from 'framer-motion';
-import Dashboard from './components/dashboard.tsx';
 import LoginForm from './components/Login.tsx';
 import Profile from './components/Profile.tsx';
+import Homepage from './components/Homepage.tsx';
+import Missions from './components/Missions.tsx';
+import Sidebar from './components/ui/Sidebar.tsx';
+import Dashboard from './components/dashboard.tsx';
+
+
 
 const App = () => {
   return (
@@ -14,36 +19,38 @@ const App = () => {
       <MotionConfig>
       <Router>
         <Routes>
-          <Route path="/signup" element={<SignupForm />} />
-
-          <Route path="/login" element={<LoginForm />} />
-          
-          <Route path="/" element={
-            <Dashboard
+          {/* home page */}
+          <Route path="/home" element={<Homepage  
             username="Krish Desai"
             email="kd@gmail.com"
-            profilePhoto="/krishavatar2.jpeg"
-            />
-            }/>
-          <Route path="/profile" element={
-            <Profile
-            // username="Krish Desai"
-            // email="kd@gmail.com"
-            // profilePhoto="/krishavatar2.jpeg"
-            />
-          }
-          />
+            profilePhoto="/krishavatar2.jpeg"/>} />
+
+          {/* signUp     */}
+          <Route path="/signup" element={<SignupForm />} />
+
+          {/* login */}
+          <Route path="/login" element={<LoginForm />} />
+
+          {/* profile */}
+          <Route path="/profile" element={<Profile/>}/>
           
-            
-
-
-          {/* <Route path="/hamburger" element={
-            <HamburgerMenu 
-            userName="Krish Desai" 
-            userEmail="kd@hotmail.com" 
-            profilePhotoUrl="/krishavatar2.jpeg" 
+          <Route path="/missions" element={<Missions 
+            username="Krish Desai"
+            email="kd@gmail.com"
+            profilePhoto="./krishavatar2.jpeg"
             />
-          }/> */}
+          }/>
+
+          <Route path="/side" element={<Sidebar
+          username="Krish Desai"
+          profilephoto="./krishavatar2.jpeg"
+          />} />
+
+
+
+          <Route path='/' element={<Dashboard/>}
+          />
+
         </Routes>
       </Router>
       </MotionConfig>

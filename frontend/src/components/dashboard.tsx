@@ -335,19 +335,15 @@
 
 import React, { useState } from 'react';
 import { Target, Leaf, FileText } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import Header from './ui/Header.tsx';
 
-interface DashboardProps {
-  username: string;
-  email: string;
-  profilePhoto: string;
-}
 
-export default function Dashboard({ username, email, profilePhoto }: DashboardProps) {
+export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<string | null>(null); // No active tab by default
   const navigate = useNavigate();
+  const username = "Example";
+  const email = "example@gmail.com";
 
   const sidebarItems = [
     { id: 'missions', icon: Target, label: 'Missions' },
@@ -365,40 +361,43 @@ export default function Dashboard({ username, email, profilePhoto }: DashboardPr
     { name: 'Sun', hours: 2 },
   ];
 
-  // const onSwitchToLogin = () => {
-  //   navigate('/login');
-  // }
-  // const onSwitchToSignup = () => {
-  //   navigate('/signup');
-  // };
-  // const handleLogout = async () => {
-  //   try {
-  //     await axios.post('http://localhost:5000/api/users/logout',
-  //       {},
-  //       { withCredentials: true }
-  //     )
-  //     navigate('/login')
-  //   } catch (error) {
-  //     console.error('Logout failed', error)
-  //   }
-  // };
-
   const onSwitchToProfile = () => {
     navigate('/profile');
   }
 
+  const onSwitchToLogin = () => {
+    navigate('/login');
+  }
+  const onSwitchToSignup = () => {
+    navigate('/signup');
+  };
+
   return (
-    <div className="flex flex-col h-screen bg-[#8b7355]">
-      
-      <Header />
+    <div className="flex flex-col h-screen bg-[#c99e69]">
+      <header className="flex items-center justify-center w-full px-1 py-4">
+        <div className={`bg-black bg-opacity-25 text-[#f5f5f0] p-3 rounded-3xl w-5/6 max-w-screen-xl flex justify-between items-center`}>
+          {/* Updated ZenZ logo with margin and Link */}
+          <Link to="/">
+            <h1 className="rounded text-2xl font-semibold cursor-pointer">ZenZ</h1>
+          </Link>
+          <div className="flex items-center space-x-2">
+            <button className="rounded-lg bg-transparent text-[#f5f5f0] hover:bg-[#c19a6b] px-4 py-2" onClick={onSwitchToLogin}>
+              Login
+            </button>
+            <button className="rounded-lg bg-transparent text-[#f5f5f0] hover:bg-[#c19a6b] px-4 py-2" onClick={onSwitchToSignup}>
+              Sign Up
+            </button>
+          </div>
+        </div>
+      </header>
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <aside className="w-72 bg-[#3a3a3a] text-[#f5f5f0] flex flex-col">
           {/* Profile Section */}
           <div className="p-6 bg-[#2a2a2a] flex flex-col items-center">
-            <img src={`${profilePhoto}?height=96&width=96`} alt="User" className="w-24 h-24 mb-4 rounded-full" />
-            <h2 className="text-xl font-semibold mb-2">{username}</h2>
+            <img src=""  alt="User" className="w-24 h-24 mb-4 rounded-full" />
+            <h2 className="text-xl font-semibold mb-2">{username ? username : "Example"}</h2>
             <button
               className="rounded-lg w-full bg-transparent border border-[#f5f5f0] text-[#f5f5f0] hover:bg-[#d2b48c] hover:text-[#2a2a2a] px-4 py-2"
               onClick={onSwitchToProfile}
