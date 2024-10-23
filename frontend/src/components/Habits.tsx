@@ -132,7 +132,7 @@ export default function Habits() {
     <div className="flex flex-col h-screen bg-[#c99e69]">
       <Header color="bg-black" />
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar username="Krish Desai" profilephoto="./krishavatar2.jpeg" />
+        <Sidebar username="Krish Desai" profilephoto="./krishavatar2.jpg" />
 
         {/* Main content displaying all habits */}
         <main className="flex-1 p-8 overflow-auto bg-[#f5f5f0]">

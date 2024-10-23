@@ -24,7 +24,6 @@ const createTask = asyncHandler( async (req, res) => {
     if (isNaN(parsedDueDate.getTime())) {
         throw new ApiError(400, "Invalid date format. Use dd-mm-yyyy.");
     }
-    console.log("User id: ",req.user._id);
     
     const newTask = await Task.create({
         task,
@@ -91,15 +90,15 @@ const updateTask = asyncHandler( async (req, res) => {
 
 const deleteTask = asyncHandler( async (req, res) => {
 
-    const { task } = req.body;
+    const { id } = req.body;
 
-    if(!task){
-        throw new ApiError(400, "Task name is required")
+    if(!id){
+        throw new ApiError(400, "Task id is required")
     }
 
     const userId = req.user._id;
 
-    const deletedTask = await Task.findOneAndDelete({ user: userId, task: task }).exec();
+    const deletedTask = await Task.findOneAndDelete({ user: userId, _id: id }).exec();
     if (!deletedTask) {
         return res.status(404).json({ message: 'Task not found' });
     }

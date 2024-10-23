@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "./ui/Header";
 import Sidebar from "./ui/Sidebar";
-import { useNavigate } from "react-router-dom";
-import { FileText, Trash, Plus, Edit, X, Book } from "lucide-react";
+import { Trash, Plus, Edit, X, Book } from "lucide-react";
 
 export default function JournalPage() {
   const [journals, setJournals] = useState<any[]>([]);
@@ -134,7 +133,7 @@ export default function JournalPage() {
     <div className="flex flex-col h-screen bg-[#c99e69]">
       <Header color="bg-black" />
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar username="Krish Desai" profilephoto="./krishavatar2.jpeg" />
+        <Sidebar username="Krish Desai" profilephoto="./krishavatar2.jpg" />
         <main className="flex-1 p-8 overflow-auto bg-[#f5f5f0]">
           <h2 className="text-3xl font-semibold mb-6 text-[#2a2a2a]">Journal</h2>
           <div className="flex space-x-4">

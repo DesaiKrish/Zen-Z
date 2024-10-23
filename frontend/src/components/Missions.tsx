@@ -2,13 +2,11 @@
 import React, { useEffect, useState } from "react";
 import Header from "./ui/Header.tsx";
 import Sidebar from "./ui/Sidebar.tsx";
-import { useNavigate } from "react-router-dom";
-import { Target, Leaf, FileText, Trash, Plus, Edit, X } from "lucide-react";
+import { Trash, Plus, Edit, X } from "lucide-react";
 
 export default function T(props) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  // Initialize tasks as an empty array to store all task data
   const [tasks, setTasks] = useState<any[]>([]);
   const [newTask, setNewTask] = useState<any>({
     task: "",
@@ -16,8 +14,9 @@ export default function T(props) {
     priority: "Medium",
   });
   const [taskToEdit, setTaskToEdit] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<string>("missions");
+  // const [activeTab, setActiveTab] = useState<string>("missions");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
 
 
   const formatDate = (dateString: string) => {
@@ -64,24 +63,81 @@ export default function T(props) {
     fetchUserData();
   }, []);
 
-  const onSwitchToProfile = () => {
-    navigate("/profile");
-  };
+  // const onSwitchToProfile = () => {
+  //   navigate("/profile");
+  // };
 
-  const sidebarItems = [
-    { id: "missions", icon: Target, label: "Missions" },
-    { id: "habitude", icon: Leaf, label: "Habitude" },
-    { id: "logs", icon: FileText, label: "Logs" },
-  ];
+  // const sidebarItems = [
+  //   { id: "missions", icon: Target, label: "Missions" },
+  //   { id: "habitude", icon: Leaf, label: "Habitude" },
+  //   { id: "logs", icon: FileText, label: "Logs" },
+  // ];
   
 
-  const handleDeleteTask = (id: number) => {
-    setTasks(tasks.filter(task => task.id !== id));
+  const handleDeleteTask = async (id: number) => {
+    console.log(id);
+    
+    try{
+      const response = await fetch("http://localhost:5000/api/tasks/deleteTask", {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id })
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update task status");
+      }
+
+      fetchUserData();
+
+    }catch (error) {
+      console.error("Error deleting task:", error);
+    }
   }
 
-  // const toggleTaskStatus = (task) => {
-  //   setTasks(tasks.map(t => t.id === task.id ? { ...t, status: t.status === 'Pending' ? 'Completed' : 'Pending' } : t));
-  // }
+  const toggleTaskStatus = async (task) => {
+    if(task.status=='completed'){
+      task.status = 'pending';
+    }
+    else task.status = 'completed';
+
+    try {
+      const response = await fetch("http://localhost:5000/api/tasks/updateTask", {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          task: task.task,  // Task name
+          updatedStatus: task.status
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update task status");
+      }
+
+      // Update tasks locally
+      setTasks(tasks.map(t => t.id === task.id ? { ...t, status: t.status === "completed" ? "pending" : "completed" } : t));
+
+      // Show alert for task completion
+      setAlertMessage("Task completed successfully");
+
+      // Clear the alert after 3 seconds
+      setTimeout(() => {
+        setAlertMessage(null);
+      }, 3000);
+
+      window.location.reload();
+
+    } catch (error) {
+      console.error("Error updating task status:", error);
+    }
+  }
 
   
 
@@ -189,10 +245,15 @@ export default function T(props) {
          <Header color="bg-black"/>
       <div className="flex flex-1 overflow-hidden">
       <Sidebar username="Krish Desai"
-          profilephoto="./krishavatar2.jpeg"/>
+          profilephoto="./krishavatar2.jpg"/>
 
         {/* Main content displaying all tasks */}
         <main className="flex-1 p-8 overflow-auto bg-[#f5f5f0]">
+        {alertMessage && (
+            <div className="bg-[#c99e69] text-black p-4 rounded-md mb-4">
+              {alertMessage}
+            </div>
+          )}
         <h2 className="text-3xl font-semibold mb-6 text-[#2a2a2a]">Missions</h2>
           <div className="flex flex-col space-y-4">
           {tasks.length > 0 ? (
@@ -211,7 +272,7 @@ export default function T(props) {
                 <input
                       type="checkbox"
                       checked={task.status === 'completed'}
-                      // onChange={() => toggleTaskStatus(task)}
+                      onChange={() => toggleTaskStatus(task)}
                       className="mr-3 appearance-none rounded-full border border-black checked:bg-[#f13060] checked:border-transparent"
                       style={{ width: '20px', height: '20px' }} // Custom size
                     />
@@ -220,14 +281,9 @@ export default function T(props) {
                 <p className={`text-gray-700 ${textColor}`}>Due Date: {task.dueDate}</p>
                 <p className={`text-gray-700 ${textColor}`}>Priority: {task.priority}</p>
                 <div className="absolute bottom-4 right-4 flex space-x-2">
+                    
                     <button
-                    onClick={() => handleEditClick(task)}
-                    className="p-1 text-white rounded-md"
-                    >
-                      <Edit className="h-4 w-4 text-black" />
-                    </button>
-                    <button
-                      onClick={() => handleDeleteTask(task.id)}
+                      onClick={() => handleDeleteTask(task._id)}
                       className="p-1 text-white rounded-md"
                     >
                       <Trash className="h-4 w-4 text-black" />

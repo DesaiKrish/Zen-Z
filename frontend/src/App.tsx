@@ -25,7 +25,7 @@ const App = () => {
           <Route path="/home" element={<Homepage  
             username="Krish Desai"
             email="kd@gmail.com"
-            profilePhoto="/krishavatar2.jpeg"/>} />
+            profilePhoto="/krishavatar2.jpg"/>} />
 
           {/* signUp     */}
           <Route path="/signup" element={<SignupForm />} />
@@ -39,7 +39,7 @@ const App = () => {
           <Route path="/missions" element={<Missions 
             username="Krish Desai"
             email="kd@gmail.com"
-            profilePhoto="./krishavatar2.jpeg"
+            profilePhoto="./krishavatar2.jpg"
             />
           }/>
           
@@ -47,7 +47,7 @@ const App = () => {
 
           <Route path="/side" element={<Sidebar
           username="Krish Desai"
-          profilephoto="./krishavatar2.jpeg"
+          profilephoto="./krishavatar2.jpg"
           />} />
 
             <Route path="/logs" element={<JournalPage />} />

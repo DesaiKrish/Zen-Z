@@ -28,7 +28,7 @@ export default function Homepage({ username, email, profilePhoto }: DashboardPro
       <Header color="bg-black"/>
       <div className="flex flex-1 overflow-hidden">
         <Sidebar username="Krish Desai"
-                 profilephoto="./krishavatar2.jpeg"/>
+                 profilephoto="./krishavatar2.jpg"/>
 
         {/* Main content */}
         <main className="flex-1 p-8 overflow-auto bg-[#f5f5f0]">
