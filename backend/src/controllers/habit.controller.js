@@ -6,8 +6,8 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 const createHabit = asyncHandler( async (req, res) => {
     const { habit, goalFreq, goalCounter, progress, goalType } = req.body;
     
-    if([habit, goalFreq, goalCounter, progress, goalType].some(field => field?.trim() === "")){
-            throw new ApiError(400, "All fields are required")
+    if ([habit, goalFreq, goalCounter, progress, goalType].some(field => typeof field === 'string' && field.trim() === "")) {
+        throw new ApiError(400, "All fields are required");
     }
     
     const newHabit = await Habit.create({
@@ -71,15 +71,17 @@ const updateHabit = asyncHandler( async (req, res) => {
 })
 
 const deleteHabit = asyncHandler( async (req, res) => {
-    const { habit } = req.body;
+    const { id } = req.params;
+    console.log("1 "+req.params.id);
+    
 
-    if(!habit){
-        throw new ApiError(400, "Habit name is required")
+    if(!id){
+        throw new ApiError(400, "Habit Id name is required")
     }
 
     const userId = req.user._id;
 
-    const deletedHabit = await Habit.findOneAndDelete({ habit: habit, user: userId }).exec();
+    const deletedHabit = await Habit.findOneAndDelete({ _id: id, user: userId }).exec();
 
     if(!deletedHabit){
         throw new ApiError(404, "Habit not found")

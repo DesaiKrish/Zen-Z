@@ -8,7 +8,7 @@ router.route("/createHabit").post(verifyJWT, createHabit)
 
 router.route("/updateHabit").post(verifyJWT, updateHabit)
 
-router.route("/deleteHabit").delete(verifyJWT, deleteHabit)
+router.route("/deleteHabit/:id").delete(verifyJWT, deleteHabit)
 
 router.route("/findAllHabit").get(verifyJWT, findAllHabit)
 

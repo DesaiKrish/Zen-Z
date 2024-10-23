@@ -87,61 +87,6 @@ const deleteJournal = asyncHandler( async (req, res) => {
     );
 })
 
-// const updateJournal = asyncHandler(async (req, res) => {
-//     const { title, updatedTitle, updatedjEntries } = req.body;
-  
-//     if (!title) {
-//       throw new ApiError(400, "Journal title is required");
-//     }
-  
-//     const journal = await Journal.findOne({ title, user: req.user._id });
-  
-//     if (!journal){
-//       return res
-//       .status(404)
-//       .json(
-//         {
-//             message: 'Journal not found' 
-//         }
-//       );
-//     }
-  
-//     if (updatedTitle) {
-//       journal.title = updatedTitle;
-//     }
-  
-//     if (updatedjEntries) {
-//       updatedjEntries.forEach(updatedEntry => {
-//         const existingEntryIndex = journal.jEntries.findIndex(entry => entry._id.toString() === updatedEntry._id);
-  
-//         if (existingEntryIndex !== -1) {
-//           journal.jEntries[existingEntryIndex] = {
-//             ...journal.jEntries[existingEntryIndex],
-//             ...updatedEntry
-//           };
-//         } else {
-//           journal.jEntries.push(updatedEntry);
-//         }
-//       });
-//     }
-  
-//     const updatedJournal = await journal.save();
-  
-//     if (!updatedJournal) {
-//       throw new ApiError(500, "Failed to update journal, try again later");
-//     }
-  
-//     return res
-//     .status(200)
-//     .json(
-//       new ApiResponse(
-//         200, 
-//         updatedJournal, 
-//         "Journal updated successfully"
-//       )
-//     );
-// });
-
 
 const updateJournal = asyncHandler(async (req, res) => {
   const { title, jEntries, updatedTitle, updatedjEntries } = req.body;
@@ -150,46 +95,41 @@ const updateJournal = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Journal title is required");
   }
 
-  const journal = await Journal.findOne({ title, user: req.user._id });
+  const journal = await Journal.findOne({user: req.user._id });
+
+  for(let i=0; i<journal.length; i++){
+    if(journal[i].title === title){
+      journal = journal[i];
+      break;
+    }
+  }
 
   if (!journal) {
-    return res
-      .status(404)
-      .json({ message: 'Journal not found' });
+    return res.status(404).json({ message: 'Journal not found' });
   }
 
   if (updatedTitle) {
     journal.title = updatedTitle;
   }
-
-  if (updatedjEntries) {
-    var existingjEntry;
-    if(jEntries.chapter){
-      existingjEntry = journal.jEntries.findOne({chapter: jEntries.chapter});
-    }
-    if(jEntries.content){
-      existingjEntry = journal.jEntries.findOne({content: jEntries.content});
-    }
-
-    if(updatedjEntries.chapter){
-      existingjEntry.chapter = updatedjEntries.chapter;
-    }
-    if(updatedjEntries.content){
-      existingjEntry.content = updatedjEntries.content;
-    }
-
-    // for (const Entry of updatejEntries) {
-    //   const existingEntryIndex = journal.jEntries.findIndex(entry =>
-    //     entry.chapter === Entry.chapter ||
-    //     entry.content === Entry.content
-    //   );
-
-      
-        journal.jEntries.push(existingjEntry);
-    }
   
+  if (updatedjEntries[0].chapter || updatedjEntries[0].content) {
+    
+    const existingjEntry = journal.jEntries.find(entry => entry.chapter === jEntries[0].chapter);    
 
-const updatedJournal = await journal.save();
+    if (existingjEntry) {
+      if (updatedjEntries[0].chapter) {
+        
+        existingjEntry.chapter = updatedjEntries[0].chapter;
+      }
+      if (updatedjEntries[0].content) {
+        existingjEntry.content = updatedjEntries[0].content;
+      }
+    } else {
+      return res.status(404).json({ message: 'Journal entry not found' });
+    }
+  }
+
+  const updatedJournal = await journal.save();
 
   if (!updatedJournal) {
     throw new ApiError(500, "Failed to update journal, try again later");
@@ -197,9 +137,7 @@ const updatedJournal = await journal.save();
 
   return res
     .status(200)
-    .json(
-      new ApiResponse(200, updatedJournal, "Journal updated successfully")
-    );
+    .json(new ApiResponse(200, updatedJournal, "Journal updated successfully"));
 });
 
 
