@@ -11,6 +11,7 @@ import Missions from './components/Missions.tsx';
 import Sidebar from './components/ui/Sidebar.tsx';
 import Dashboard from './components/dashboard.tsx';
 import JournalPage from './components/Journals.tsx';
+import Habit from './components/Habits.tsx';
 
 
 
@@ -41,13 +42,15 @@ const App = () => {
             profilePhoto="./krishavatar2.jpeg"
             />
           }/>
+          
+          <Route path="/habitude" element={<Habit/>}/>
 
           <Route path="/side" element={<Sidebar
           username="Krish Desai"
           profilephoto="./krishavatar2.jpeg"
           />} />
 
-            <Route path="/j" element={<JournalPage />} />
+            <Route path="/logs" element={<JournalPage />} />
 
           <Route path='/' element={<Dashboard/>}
           />
