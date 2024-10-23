@@ -10,6 +10,7 @@ import Homepage from './components/Homepage.tsx';
 import Missions from './components/Missions.tsx';
 import Sidebar from './components/ui/Sidebar.tsx';
 import Dashboard from './components/dashboard.tsx';
+import JournalPage from './components/Journals.tsx';
 
 
 
@@ -46,7 +47,7 @@ const App = () => {
           profilephoto="./krishavatar2.jpeg"
           />} />
 
-
+            <Route path="/j" element={<JournalPage />} />
 
           <Route path='/' element={<Dashboard/>}
           />
